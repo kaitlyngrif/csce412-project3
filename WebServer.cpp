@@ -1,5 +1,6 @@
 
-#include "webserver.h"
+#include "WebServer.h"
+#include "Request.h"
 
 /*
 Webserver(s)
