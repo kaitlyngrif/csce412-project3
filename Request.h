@@ -1,5 +1,8 @@
 // holds request
 
+#ifndef REQUEST_H
+#define REQUEST_H
+
 #include <iostream>
 using std::cout, std::endl, std::string;
 
@@ -22,3 +25,5 @@ public:
     string getIPin() { return IPin; }
     string getIPout() { return IPout; }
 };
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef REQUESTQUEUE_H
+#define REQUESTQUEUE_H
+
 #include "Request.h"
 #include <queue>
 
@@ -15,3 +18,5 @@ public:
     int size();
     void print();   
 };
+
+#endif
