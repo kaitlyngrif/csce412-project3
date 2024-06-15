@@ -18,4 +18,7 @@ public:
     }
     Request();
     void print();
+    int getTime() { return time; }
+    string getIPin() { return IPin; }
+    string getIPout() { return IPout; }
 };
