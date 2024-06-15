@@ -1,6 +1,17 @@
-class RequestQueue {
-    // variables added here
+#include "Request.h"
+#include <queue>
 
-    // functions added here
-    
+class RequestQueue {
+
+private:
+    std::queue<Request*> queue;
+
+public:
+    RequestQueue();
+    ~RequestQueue();
+    void addRequest(Request* request);
+    Request* getNext();
+    bool isEmpty();
+    int size();
+    void print();   
 };

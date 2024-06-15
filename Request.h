@@ -5,11 +5,12 @@ using std::cout, std::endl, std::string;
 
 struct Request {
     // IP addresses for in and out + time to process
+private:
     string IPin;
     string IPout;
     int time;
 
-    // constructor
+public:
     Request(string IPin, string IPout, int time) {
         this->IPin = IPin;
         this->IPout = IPout;
@@ -17,5 +18,4 @@ struct Request {
     }
     Request();
     void print();
- 
 };
