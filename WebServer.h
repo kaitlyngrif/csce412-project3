@@ -9,8 +9,8 @@ class WebServer {
 private:
     // variables here
     // have a queue of requests, assigned by load balancer, that it should be responsible for
-    std::queue<Request*> webQueue;
-    int time;
+    std::queue<Request*> webQueue = std::queue<Request*>();
+    int time = 0;
 
 public:
     // functions here

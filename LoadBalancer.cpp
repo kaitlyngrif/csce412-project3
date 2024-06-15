@@ -11,3 +11,6 @@ o Keeps track of time.
 
 // add new requests at different times
 // dynamically allocate and deallocate webservers to maintain balance
+
+// find out which webserver is best based on current state
+// have a queue of requests in webserver, assigned by load balancer, that it should be responsible for

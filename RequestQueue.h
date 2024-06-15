@@ -7,7 +7,7 @@
 class RequestQueue {
 
 private:
-    std::queue<Request*> queue;
+    std::queue<Request*> queue = std::queue<Request*>();
 
 public:
     RequestQueue();

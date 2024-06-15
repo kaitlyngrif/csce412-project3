@@ -13,9 +13,7 @@ o Process the requests
 o Asks for another
 */
 
-WebServer::WebServer(){
-    time = 0;
-}
+WebServer::WebServer(){}
 
 WebServer::~WebServer(){
     while(!webQueue.empty()){

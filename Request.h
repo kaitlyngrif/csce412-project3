@@ -9,9 +9,9 @@ using std::cout, std::endl, std::string;
 struct Request {
     // IP addresses for in and out + time to process
 private:
-    string IPin;
-    string IPout;
-    int time;
+    string IPin = "";
+    string IPout = "";
+    int time = 0;
 
 public:
     Request(string IPin, string IPout, int time) {
