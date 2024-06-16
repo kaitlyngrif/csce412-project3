@@ -1,98 +1,105 @@
 #include "LoadBalancer.h"
+#include <iostream>
+using std::endl, std::cerr, std::cout;
 
-// manages the webservers and the request queue
-// should work for the creation of multiple load 
-// balancers and not just be part of hte driver program
-/*
-Load Balancer
-o Queue of requests
-o Keeps track of time.
-*/
-
-// add new requests at different times
-// dynamically allocate and deallocate webservers to maintain balance
-
-// find out which webserver is best based on current state
-// have a queue of requests in webserver, assigned by load balancer, that it should be responsible for
-
-LoadBalancer::LoadBalancer(){};
-
-LoadBalancer::LoadBalancer(RequestQueue& requestQueue){
-    this->requestQueue = requestQueue;
+LoadBalancer::LoadBalancer(RequestQueue& requestQueue)
+    : requestQueue(requestQueue), time(0), serverCount(0), maxServers(0) {
 }
 
-LoadBalancer::~LoadBalancer(){
-    while(!webServers.empty()){
-        WebServer* webServer = webServers.back();
-        webServers.pop_back();
-        delete webServer;
-    }
+LoadBalancer::~LoadBalancer() {
 }
 
-void LoadBalancer::runBalancer(int time, int serverCount){
-    webServers.clear();
-    webServers.reserve(serverCount);
-    webServers.push_back(new WebServer());
-    this->serverCount = 1;
+void LoadBalancer::runBalancer(int time, int serverCount) {
     maxServers = serverCount;
     
-    for(int i = 0; i < time; i++){
+    webServers.clear();
+    webServers.reserve(serverCount);
+
+
+    for (int i = 0; i < serverCount; ++i) {
+        webServers.push_back(std::make_unique<WebServer>());
+    }
+
+    for (int i = 0; i < time; ++i) {
         balanceLoad();
 
-        // add a new request to the queue randomly
-        if(rand() % 11 == 0){
+        // add new request to the queue randomly
+        if (rand() % 11 == 0) {
             addRequest();
         }
 
-        // increment the load balancer's time
+        // increment load balancer's time
         this->time++;
-        cout << "Time: " << this->time << endl;
+        std::cout << "Time: " << this->time << std::endl;
 
-        // add a new web server if necessary
-        if(requestQueue.size() > (serverCount * 10) && this->serverCount < serverCount){
-            addWebServer();
+        // process requests on each server
+        processRequest();
+
+        // TODO: redo server allocation and deallocation
+
+        // if any servers are empty, deallocate them
+        for (int j = 0; j < serverCount; ++j) {
+            if (webServers[j] && webServers[j]->isEmpty()) {
+                webServers.erase(webServers.begin() + j);
+                serverCount--;
+                j--;
+            }
         }
-        // deallocate a web server if necessary
-        if(requestQueue.size() < (serverCount * 5) && this->serverCount > 1){
-            WebServer* webServer = webServers.back();
-            webServers.pop_back();
-            delete webServer;
-            this->serverCount--;
+
+        // add new web server if necessary
+        if (requestQueue.size() > (serverCount * 10) && this->serverCount < maxServers) {
+            addWebServer();
         }
     }
 }
 
 void LoadBalancer::balanceLoad() {
-    for(int i = 0; i < serverCount; i++){
-        if(webServers[i]->isEmpty()){
-            webServers[i]->addRequest(requestQueue.getNext());
+    for (int i = 0; i < serverCount; i++) {
+        if (webServers[i]) {
+            if (!requestQueue.isEmpty()) {
+                Request* nextRequest = requestQueue.getNext();
+                if (nextRequest != nullptr) {
+                    webServers[i]->addRequest(nextRequest);
+                } else {
+                    cerr << "Error: Attempted to get a null request from the queue." << endl;
+                }
+            }
+            webServers[i]->processRequest();
+        } else {
+            cerr << "Error: webServers[" << i << "] is null." << endl;
         }
-        webServers[i]->processRequest();
     }
 }
 
-void LoadBalancer::addRequest(){
+void LoadBalancer::addRequest() {
     requestQueue.addRequest(new Request());
 }
 
-void LoadBalancer::addWebServer(){
-    webServers.push_back(new WebServer());
+void LoadBalancer::addWebServer() {
+    webServers.push_back(std::make_unique<WebServer>());
     serverCount++;
 }
 
-void LoadBalancer::processRequest(){
-    for(int i = 0; i < serverCount; i++){
-        webServers[i]->processRequest();
+void LoadBalancer::processRequest() {
+    for (int i = 0; i < serverCount; i++) {
+        if (webServers[i]) {
+            webServers[i]->processRequest();
+        } else {
+            cerr << "Error: Attempted to process request on a null web server." << endl;
+        }
     }
 }
 
-void LoadBalancer::print(){
-    for(int i = 0; i < serverCount; i++){
-        cout << "WebServer " << i << " has " << webServers[i]->size() << " requests" << endl;
+void LoadBalancer::print() {
+    for (int i = 0; i < serverCount; i++) {
+        if (webServers[i]) {
+            cout << "WebServer " << i << " has " << webServers[i]->size() << " requests" << endl;
+        } else {
+            cerr << "Error: webServers[" << i << "] is null." << endl;
+        }
     }
 }
 
-bool LoadBalancer::isEmpty(){
+bool LoadBalancer::isEmpty() {
     return requestQueue.isEmpty();
 }
-

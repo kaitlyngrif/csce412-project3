@@ -13,7 +13,7 @@ int main() {
     cout << "Enter the amount of clock cycles you wish to run the load balancer for as a whole number: ";
     cin >> balancerInput;
 
-    // input validation, ensuring both inputs are integers
+    // input validation, ensure both inputs are integers
     try {
         serverCount = std::stoi(serverInput);
     } catch (std::invalid_argument) {
@@ -27,29 +27,29 @@ int main() {
         return 1;
     }
 
-    // input validation, ensuring both inputs are positive
+    // input validation, ensure both inputs are positive
     if (serverCount <= 0 || balancerTime <= 0) {
         cout << "Please enter positive numbers for both inputs!" << endl;
         return 1;
     }
 
-    // input validation was successful
+    // inputs are good
     cout << "The load balancer is running with " << serverCount << " servers with the load balancer running for " << balancerTime << " clock cycles." << endl;
 
-    RequestQueue queue = RequestQueue(); 
-    // generate a full queue (servers * 100) 
-    for(int i = 0; i < serverCount * 100; i++){
-        // generate a request and push it to the queue
+    RequestQueue queue; 
+    // generate full queue (servers * 100) 
+    for (int i = 0; i < serverCount * 100; i++) {
+        // Generate a request and push it to the queue
         queue.addRequest(new Request());
     }
 
     // record starting queue size
     int startingQueueSize = queue.size();
 
-    // TODO: create load balancer
-    LoadBalancer balancer = LoadBalancer(queue);
+    // create load balancer
+    LoadBalancer balancer(queue);
 
-    // TODO: call load balancer with queue and time
+    // call load balancer with queue and time
     balancer.runBalancer(balancerTime, serverCount);
 
     // record ending queue size

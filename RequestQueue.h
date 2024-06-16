@@ -5,9 +5,8 @@
 #include <queue>
 
 class RequestQueue {
-
 private:
-    std::queue<Request*> queue = std::queue<Request*>();
+    std::queue<Request*> queue;
 
 public:
     RequestQueue();
@@ -16,7 +15,7 @@ public:
     Request* getNext();
     bool isEmpty();
     int size();
-    void print();   
+    void print();
 };
 
 #endif

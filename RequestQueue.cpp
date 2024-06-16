@@ -1,9 +1,8 @@
 #include "RequestQueue.h"
+#include <iostream>
 
-// constructor
 RequestQueue::RequestQueue() {}
 
-// destructor
 RequestQueue::~RequestQueue() {
     while (!queue.empty()) {
         delete queue.front();
@@ -11,14 +10,18 @@ RequestQueue::~RequestQueue() {
     }
 }
 
-// add request to queue
 void RequestQueue::addRequest(Request* request) {
-    queue.push(request);
+    if (request != nullptr) {
+        queue.push(request);
+        std::cout << "Added request to queue. Queue size is now: " << queue.size() << std::endl;
+    } else {
+        std::cerr << "Error: Attempted to add a null request to the queue." << std::endl;
+    }
 }
 
-// get request from queue
 Request* RequestQueue::getNext() {
-    if(queue.empty()) {
+    if (queue.empty()) {
+        std::cerr << "Error: Attempted to get a request from an empty queue." << std::endl;
         return nullptr;
     }
 
@@ -27,23 +30,19 @@ Request* RequestQueue::getNext() {
     return request;
 }
 
-// check if queue is empty
 bool RequestQueue::isEmpty() {
     return queue.empty();
 }
 
-// get size of queue
 int RequestQueue::size() {
     return queue.size();
 }
 
-// print queue
 void RequestQueue::print() {
     std::queue<Request*> tempQueue = queue;
     while (!tempQueue.empty()) {
         tempQueue.front()->print();
-        cout << endl;
+        std::cout << std::endl;
         tempQueue.pop();
     }
 }
-
