@@ -24,7 +24,7 @@ void LoadBalancer::runBalancer(int time, int serverCount) {
         balanceLoad();
 
         // add new request to the queue randomly
-        if (rand() % 11 == 0) {
+        if (rand() % 7 == 0) {
             addRequest();
         }
 
