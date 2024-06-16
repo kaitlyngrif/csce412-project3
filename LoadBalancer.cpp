@@ -34,6 +34,8 @@ void LoadBalancer::runBalancer(int time, int serverCount){
     webServers.reserve(serverCount);
     webServers.push_back(new WebServer());
     this->serverCount = 1;
+    maxServers = serverCount;
+    
     for(int i = 0; i < time; i++){
         balanceLoad();
 
@@ -45,26 +47,27 @@ void LoadBalancer::runBalancer(int time, int serverCount){
         // increment the load balancer's time
         this->time++;
         cout << "Time: " << this->time << endl;
+
+        // add a new web server if necessary
+        if(requestQueue.size() > (serverCount * 10) && this->serverCount < serverCount){
+            addWebServer();
+        }
+        // deallocate a web server if necessary
+        if(requestQueue.size() < (serverCount * 5) && this->serverCount > 1){
+            WebServer* webServer = webServers.back();
+            webServers.pop_back();
+            delete webServer;
+            this->serverCount--;
+        }
     }
 }
 
 void LoadBalancer::balanceLoad() {
-    for (int i = 0; i < serverCount; ++i) {
-        if (webServers[i]->isEmpty()) {
-            continue;
+    for(int i = 0; i < serverCount; i++){
+        if(webServers[i]->isEmpty()){
+            webServers[i]->addRequest(requestQueue.getNext());
         }
-    }
-    
-    while (!requestQueue.isEmpty()) {
-        for (int i = 0; i < serverCount; ++i) {
-            if (requestQueue.isEmpty()) {
-                break;
-            }
-            if (webServers[i]->isEmpty()) {
-                webServers[i]->addRequest(requestQueue.getNext());
-            }
-            webServers[i]->processRequest();
-        }
+        webServers[i]->processRequest();
     }
 }
 

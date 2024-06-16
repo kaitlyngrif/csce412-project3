@@ -16,6 +16,7 @@ private:
     int time = 0;
     int serverCount = 0;
     void balanceLoad();
+    int maxServers;
 
 public:
     LoadBalancer();
