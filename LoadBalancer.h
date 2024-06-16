@@ -10,24 +10,21 @@
 #include "WebServer.h"
 
 class LoadBalancer {
-    // variables here
 private:
-    RequestQueue requestQueue;
-    std::vector<WebServer*> webServers;
-    int time;
-    int serverCount;
+    RequestQueue requestQueue = RequestQueue();
+    std::vector<WebServer*> webServers = std::vector<WebServer*>();
+    int time = 0;
+    int serverCount = 0;
+    void balanceLoad();
 
-    // functions here
 public:
     LoadBalancer();
-    //LoadBalancer(int serverCount);
     LoadBalancer(RequestQueue& requestQueue);
-    //LoadBalancer(RequestQueue requestQueue, std::vector<WebServer*> webServers);
     ~LoadBalancer();
     void runBalancer(int time, int serverCount);
-    void balanceLoad();
-    void addRequest(Request* request);
-    void addWebServer(WebServer* webServer);
+    
+    void addRequest();
+    void addWebServer();
     void processRequest();
     void print();
     bool isEmpty();

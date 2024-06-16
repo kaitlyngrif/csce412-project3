@@ -31,14 +31,23 @@ bool WebServer::isEmpty(){
     return webQueue.empty();
 }
 
+int WebServer::size(){
+    return webQueue.size();
+}
+
 void WebServer::processRequest(){
     if(webQueue.empty()){
         cout << "No requests to process" << endl;
         return;
     }
     Request* request = webQueue.front();
-    webQueue.pop();
-    time += request->getTime();
-    cout << "Processing request from " << request->getIPin() << " to " << request->getIPout() << " in " << request->getTime() << " seconds" << endl;
-    delete request;
+    // decrement the time it takes to process the request
+    request->process();
+    if(request->isComplete()) {
+        cout << "Request from " << request->getIPin() << " to " << request->getIPout() << " has been processed" << endl;
+        webQueue.pop();
+        delete request;
+    } else {
+        cout << "Request from " << request->getIPin() << " to " << request->getIPout() << " is still processing" << endl;
+    }
 }

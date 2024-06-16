@@ -1,6 +1,7 @@
 #include <iostream>
 using std::cout, std::endl, std::cin, std::string;
 #include "RequestQueue.h"
+#include "LoadBalancer.h"
 
 int main() {
     int serverCount = -1, balancerTime = -1; 
@@ -9,7 +10,7 @@ int main() {
     cout << "Howdy! Welcome to Kaitlyn Griffin's Load Balancer Program for CSCE 412 Project 3" << endl;
     cout << "Enter the number of servers you wish to use as a whole number: ";
     cin >> serverInput;
-    cout << endl << "Enter the amount of clock cycles you wish to run the load balancer for as a whole number: ";
+    cout << "Enter the amount of clock cycles you wish to run the load balancer for as a whole number: ";
     cin >> balancerInput;
 
     // input validation, ensuring both inputs are integers
@@ -33,7 +34,7 @@ int main() {
     }
 
     // input validation was successful
-    cout << "The load balancer is running with " << serverCount << " servers with each load balancer running for " << balancerTime << " clock cycles." << endl;
+    cout << "The load balancer is running with " << serverCount << " servers with the load balancer running for " << balancerTime << " clock cycles." << endl;
 
     RequestQueue queue = RequestQueue(); 
     // generate a full queue (servers * 100) 
@@ -41,4 +42,20 @@ int main() {
         // generate a request and push it to the queue
         queue.addRequest(new Request());
     }
+
+    // record starting queue size
+    int startingQueueSize = queue.size();
+
+    // TODO: create load balancer
+    LoadBalancer balancer = LoadBalancer(queue);
+
+    // TODO: call load balancer with queue and time
+    balancer.runBalancer(balancerTime, serverCount);
+
+    // record ending queue size
+    int endingQueueSize = queue.size();
+
+    cout << "The load balancer started with " << startingQueueSize << " requests and ended with " << endingQueueSize << " requests." << endl;
+
+    return 0;
 }

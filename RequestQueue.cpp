@@ -45,6 +45,5 @@ void RequestQueue::print() {
         cout << endl;
         tempQueue.pop();
     }
-    delete &tempQueue; //might cause memory issues, will need to test this
 }
 

@@ -10,7 +10,7 @@ Request::Request(){
             IPout += ".";
         }
     }
-    time = rand() % 100;
+    time = rand() % 10;
 };
 
 void Request::print() {

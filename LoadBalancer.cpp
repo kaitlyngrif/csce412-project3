@@ -14,3 +14,82 @@ o Keeps track of time.
 
 // find out which webserver is best based on current state
 // have a queue of requests in webserver, assigned by load balancer, that it should be responsible for
+
+LoadBalancer::LoadBalancer(){};
+
+LoadBalancer::LoadBalancer(RequestQueue& requestQueue){
+    this->requestQueue = requestQueue;
+}
+
+LoadBalancer::~LoadBalancer(){
+    while(!webServers.empty()){
+        WebServer* webServer = webServers.back();
+        webServers.pop_back();
+        delete webServer;
+    }
+}
+
+void LoadBalancer::runBalancer(int time, int serverCount){
+    webServers.clear();
+    webServers.reserve(serverCount);
+    webServers.push_back(new WebServer());
+    this->serverCount = 1;
+    for(int i = 0; i < time; i++){
+        balanceLoad();
+
+        // add a new request to the queue randomly
+        if(rand() % 11 == 0){
+            addRequest();
+        }
+
+        // increment the load balancer's time
+        this->time++;
+        cout << "Time: " << this->time << endl;
+    }
+}
+
+void LoadBalancer::balanceLoad() {
+    for (int i = 0; i < serverCount; ++i) {
+        if (webServers[i]->isEmpty()) {
+            continue;
+        }
+    }
+    
+    while (!requestQueue.isEmpty()) {
+        for (int i = 0; i < serverCount; ++i) {
+            if (requestQueue.isEmpty()) {
+                break;
+            }
+            if (webServers[i]->isEmpty()) {
+                webServers[i]->addRequest(requestQueue.getNext());
+            }
+            webServers[i]->processRequest();
+        }
+    }
+}
+
+void LoadBalancer::addRequest(){
+    requestQueue.addRequest(new Request());
+}
+
+void LoadBalancer::addWebServer(){
+    webServers.push_back(new WebServer());
+    serverCount++;
+}
+
+void LoadBalancer::processRequest(){
+    for(int i = 0; i < serverCount; i++){
+        webServers[i]->processRequest();
+    }
+}
+
+void LoadBalancer::print(){
+    for(int i = 0; i < serverCount; i++){
+        cout << "WebServer " << i << " has " << webServers[i]->size() << " requests" << endl;
+    }
+}
+
+bool LoadBalancer::isEmpty(){
+    return requestQueue.isEmpty();
+}
+

@@ -24,6 +24,8 @@ public:
     int getTime() { return time; }
     string getIPin() { return IPin; }
     string getIPout() { return IPout; }
+    bool isComplete() { return time <= 0; }
+    void process() { time--; }
 };
 
 #endif

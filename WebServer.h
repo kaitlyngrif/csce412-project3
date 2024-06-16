@@ -19,6 +19,7 @@ public:
     void addRequest(Request* request);
     bool isEmpty();
     void processRequest();
+    int size();
 };
 
 #endif
