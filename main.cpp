@@ -17,7 +17,7 @@ int main() {
     try {
         serverCount = std::stoi(serverInput);
     } catch (std::invalid_argument) {
-        cout << "Please enter a whole number for the number of servers!" << endl;
+        cout << "Please enter a whole number for the maximum number of servers!" << endl;
         return 1;
     }
     try {
@@ -34,12 +34,11 @@ int main() {
     }
 
     // inputs are good
-    cout << "The load balancer is running with " << serverCount << " servers with the load balancer running for " << balancerTime << " clock cycles." << endl;
+    cout << "The load balancer is running with a maximum of " << serverCount << " servers with the load balancer running for " << balancerTime << " clock cycles." << endl;
 
     RequestQueue queue; 
     // generate full queue (servers * 100) 
     for (int i = 0; i < serverCount * 100; i++) {
-        // Generate a request and push it to the queue
         queue.addRequest(new Request());
     }
 
