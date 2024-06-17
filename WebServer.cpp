@@ -8,7 +8,7 @@ WebServer::~WebServer() {
     while (!webQueue.empty()) {
         Request* request = webQueue.front();
         webQueue.pop();
-        delete request;
+        //delete &request;
     }
 }
 
@@ -18,6 +18,10 @@ void WebServer::addRequest(Request* request) {
     } else {
         cerr << "Error: Attempted to add a null request to the web server." << endl;
     }
+}
+
+std::queue<Request*> WebServer::getRequests() {
+    return webQueue;
 }
 
 bool WebServer::isEmpty() {

@@ -23,6 +23,7 @@ public:
     void runBalancer(int time, int serverCount);
     void addRequest();
     void addWebServer();
+    void removeWebServer();
     void processRequest();
     void print();
     bool isEmpty();

@@ -24,7 +24,7 @@ void LoadBalancer::runBalancer(int time, int serverCount) {
         balanceLoad();
 
         // add new request to the queue randomly
-        if (rand() % 7 == 0) {
+        if (rand() % 4 == 0) { // 25% chance of adding a request
             addRequest();
         }
 
@@ -34,26 +34,34 @@ void LoadBalancer::runBalancer(int time, int serverCount) {
 
         // process requests on each server
         processRequest();
-
-        // TODO: redo server allocation and deallocation
-
-        // if any servers are empty, deallocate them
-        for (int j = 0; j < serverCount; ++j) {
-            if (webServers[j] && webServers[j]->isEmpty()) {
-                webServers.erase(webServers.begin() + j);
-                serverCount--;
-                j--;
-            }
-        }
-
-        // add new web server if necessary
-        if (requestQueue.size() > (serverCount * 10) && this->serverCount < maxServers) {
-            addWebServer();
-        }
     }
 }
 
 void LoadBalancer::balanceLoad() {
+
+    // check if a server needs to be allocated or deallocated
+    if (requestQueue.size() > (serverCount * 10) && serverCount < maxServers) {
+        addWebServer();
+    } else if (requestQueue.size() < (serverCount * 10) && serverCount > 1) {
+        // get the requests from the last server
+        std::queue<Request*> q = webServers[serverCount - 1]->getRequests();
+        // redistribute requests from deallocated server across existing webservers
+        while(!q.empty()) {
+            for(int i = 0; i < serverCount - 1; i++) {
+                if(q.empty()) {
+                    break;
+                } else {
+                    webServers[i]->addRequest(q.front());
+                    q.pop();
+                }
+            }
+        }
+
+        // deallocate the server
+        removeWebServer();
+    }
+
+    // balance load
     for (int i = 0; i < serverCount; i++) {
         if (webServers[i]) {
             if (!requestQueue.isEmpty()) {
@@ -64,7 +72,9 @@ void LoadBalancer::balanceLoad() {
                     cerr << "Error: Attempted to get a null request from the queue." << endl;
                 }
             }
-            webServers[i]->processRequest();
+            if(!webServers[i]->isEmpty()) {
+                webServers[i]->processRequest();
+            }
         } else {
             cerr << "Error: webServers[" << i << "] is null." << endl;
         }
@@ -78,6 +88,13 @@ void LoadBalancer::addRequest() {
 void LoadBalancer::addWebServer() {
     webServers.push_back(std::make_unique<WebServer>());
     serverCount++;
+}
+
+void LoadBalancer::removeWebServer() {
+    if (serverCount > 1) {
+        webServers.pop_back();
+        serverCount--;
+    }
 }
 
 void LoadBalancer::processRequest() {

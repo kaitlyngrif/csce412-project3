@@ -16,6 +16,7 @@ public:
     bool isEmpty();
     int size();
     void processRequest();
+    std::queue<Request*> getRequests();
 };
 
 #endif

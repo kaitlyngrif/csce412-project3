@@ -34,7 +34,8 @@ int main() {
     }
 
     // inputs are good
-    cout << "The load balancer is running with a maximum of " << serverCount << " servers with the load balancer running for " << balancerTime << " clock cycles." << endl;
+    cout << "The load balancer is running with a maximum of " << serverCount 
+        << " servers with the load balancer running for " << balancerTime << " clock cycles." << endl;
 
     RequestQueue queue; 
     // generate full queue (servers * 100) 
