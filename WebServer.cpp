@@ -9,6 +9,8 @@
 #include "WebServer.h"
 #include <iostream>
 using std::cout, std::endl, std::cerr;
+#include <fstream>
+extern std::ofstream logFile;
 
 /**
  * @brief Construct a new Web Server:: Web Server object.
@@ -36,6 +38,7 @@ void WebServer::addRequest(Request* request) {
         webQueue.push(request);
     } else {
         cerr << "Error: Attempted to add a null request to the web server." << endl;
+        logFile << "Error: Attempted to add a null request to the web server." << endl;
     }
 }
 
@@ -87,6 +90,7 @@ int WebServer::getTime() {
 void WebServer::processRequest() {
     if (webQueue.empty()) {
         cout << "No requests to process" << endl;
+        logFile << "No requests to process" << endl;
         return;
     }
 
@@ -95,9 +99,11 @@ void WebServer::processRequest() {
 
     if (request->isComplete()) {
         cout << "Request from " << request->getIPin() << " to " << request->getIPout() << " has been processed" << endl;
+        logFile << "Request from " << request->getIPin() << " to " << request->getIPout() << " has been processed" << endl;
         webQueue.pop();
         delete request;
     } else {
         cout << "Request from " << request->getIPin() << " to " << request->getIPout() << " is still processing" << endl;
+        logFile << "Request from " << request->getIPin() << " to " << request->getIPout() << " is still processing" << endl;
     }
 }

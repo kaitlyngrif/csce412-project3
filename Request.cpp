@@ -8,6 +8,8 @@
 
 #include "Request.h"
 using std::to_string;
+#include <fstream>
+extern std::ofstream logFile;
 
 /**
  * @brief Constructs a new Request:: Request object.
@@ -32,4 +34,8 @@ void Request::print() {
     cout << "IP in: " << IPin << endl;
     cout << "IP out: " << IPout << endl;
     cout << "Time: " << time << endl;
+
+    logFile << "IP in: " << IPin << endl;
+    logFile << "IP out: " << IPout << endl;
+    logFile << "Time: " << time << endl;
 };

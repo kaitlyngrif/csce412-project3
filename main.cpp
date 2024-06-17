@@ -10,6 +10,9 @@
 using std::cout, std::endl, std::cin, std::string;
 #include "RequestQueue.h"
 #include "LoadBalancer.h"
+#include <fstream>
+
+std::ofstream logFile("loadBalancerLog.txt");
 
 /**
  * @brief Main function for the load balancer program.
@@ -17,6 +20,11 @@ using std::cout, std::endl, std::cin, std::string;
  * @return int 0 if successful, 1 if error.
  */
 int main() {
+    if(!logFile.is_open()){
+        cout << "Error: Could not open log file." << endl;
+        return 1;
+    }
+
     int serverCount = -1, balancerTime = -1; 
     string serverInput, balancerInput;
     
@@ -50,6 +58,9 @@ int main() {
     cout << "The load balancer is running with a maximum of " << serverCount 
         << " servers with the load balancer running for " << balancerTime << " clock cycles." << endl;
 
+    logFile << "The load balancer is running with a maximum of " << serverCount 
+        << " servers with the load balancer running for " << balancerTime << " clock cycles." << endl;
+
     RequestQueue queue; 
     //!< generate full queue (servers * 100). 
     for (int i = 0; i < serverCount * 100; i++) {
@@ -69,8 +80,11 @@ int main() {
     int endingQueueSize = queue.size();
 
     cout << endl << "The load balancer started with " << startingQueueSize << " requests and ended with " << endingQueueSize << " requests." << endl << endl;
+    logFile << endl << "The load balancer started with " << startingQueueSize << " requests and ended with " << endingQueueSize << " requests." << endl << endl;
 
+    cout << "The average time to process a request was " << balancer->averageRunTime() << " clock cycles." << endl;
+    logFile << "The average time to process a request was " << balancer->averageRunTime() << " clock cycles." << endl;
+    
     delete balancer;
-
     return 0;
 }

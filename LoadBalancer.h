@@ -39,6 +39,7 @@ public:
     void processRequest(); //!< process requests on each server.
     void print(); //!< print the status of all web servers the load balancer is responsible for.
     bool isEmpty(); //!< check if the request queue is empty.
+    double averageRunTime(); //!< get the average run time of the requests.
 };
 
 #endif

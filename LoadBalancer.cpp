@@ -10,6 +10,8 @@
 #include <iostream>
 #include <memory>
 using std::endl, std::cerr, std::cout;
+#include <fstream>
+extern std::ofstream logFile;
 
 /**
  * @brief Construct a new Load Balancer:: Load Balancer object.
@@ -53,12 +55,14 @@ void LoadBalancer::runBalancer(int time, int serverCount) {
         //!< add new request to the queue randomly.
         if (rand() % 20 == 0) { //!< 5% chance of adding a request.
             cout << "Adding a request randomly" << endl;
+            logFile << "Adding a request randomly" << endl;
             addRequest();
         }
 
         //!< increment load balancer's time.
         this->time++;
         cout << endl << "Time: " << this->time << endl;
+        logFile << endl << "Time: " << this->time << endl;
 
         //!< process requests on each server.
         processRequest();
@@ -103,6 +107,7 @@ void LoadBalancer::balanceLoad() {
             }
         } else {
             cerr << "Error: Attempted to get a null request from the queue." << endl;
+            logFile << "Error: Attempted to get a null request from the queue." << endl;
         }
     }
 }
@@ -141,6 +146,7 @@ void LoadBalancer::addWebServer() {
     webServers.push_back(std::make_unique<WebServer>());
     serverCount++;
     cout << "Allocated new web server. Total servers: " << serverCount << endl;
+    logFile << "Allocated new web server. Total servers: " << serverCount << endl;
 }
 
 /**
@@ -151,6 +157,7 @@ void LoadBalancer::removeWebServer() {
         webServers.pop_back();
         serverCount--;
         cout << "Deallocated a web server. Total servers: " << serverCount << endl;
+        logFile << "Deallocated a web server. Total servers: " << serverCount << endl;
     }
 }
 
@@ -161,9 +168,11 @@ void LoadBalancer::processRequest() {
     for (int i = 0; i < serverCount; i++) {
         if (webServers[i]) {
             cout << "Server " << (i+1) << " processing request for " << webServers[i]->getTime() << " clock cycles." << endl;
+            logFile << "Server " << (i+1) << " processing request for " << webServers[i]->getTime() << " clock cycles." << endl;
             webServers[i]->processRequest();
         } else {
             cerr << "Error: Attempted to process request on a null web server." << endl;
+            logFile << "Error: Attempted to process request on a null web server." << endl;
         }
     }
 }
@@ -175,8 +184,10 @@ void LoadBalancer::print() {
     for (int i = 0; i < serverCount; i++) {
         if (webServers[i]) {
             cout << "WebServer " << i << " has " << webServers[i]->size() << " requests" << endl;
+            logFile << "WebServer " << i << " has " << webServers[i]->size() << " requests" << endl;
         } else {
             cerr << "Error: webServers[" << i << "] is null." << endl;
+            logFile << "Error: webServers[" << i << "] is null." << endl;
         }
     }
 }
@@ -189,4 +200,19 @@ void LoadBalancer::print() {
  */
 bool LoadBalancer::isEmpty() {
     return requestQueue.isEmpty();
+}
+
+/**
+ * @brief Get the average run time of the requests.
+ * 
+ * @return double the average run time of the requests.
+ */
+double LoadBalancer::averageRunTime() {
+    double total = 0;
+    for(int i = 0; i < requestQueue.size(); i++) {
+        Request* req = requestQueue.getNext();
+        total += req->getTime();
+    }
+    
+    return (total / requestQueue.size());
 }

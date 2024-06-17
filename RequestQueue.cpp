@@ -8,6 +8,8 @@
 
 #include "RequestQueue.h"
 #include <iostream>
+#include <fstream>
+extern std::ofstream logFile;
 
 /**
  * @brief Construct a new Request Queue:: Request Queue object.
@@ -32,8 +34,10 @@ RequestQueue::~RequestQueue() {
 void RequestQueue::addRequest(Request* request) {
     if (request != nullptr) {
         queue.push(request);
+        requestTimes.push_back(request->getTime());
     } else {
         std::cerr << "Error: Attempted to add a null request to the queue." << std::endl;
+        logFile << "Error: Attempted to add a null request to the queue." << std::endl;
     }
 }
 
@@ -45,6 +49,7 @@ void RequestQueue::addRequest(Request* request) {
 Request* RequestQueue::getNext() {
     if (queue.empty()) {
         std::cerr << "Error: Attempted to get a request from an empty queue." << std::endl;
+        logFile << "Error: Attempted to get a request from an empty queue." << std::endl;
         return nullptr;
     }
 

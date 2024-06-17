@@ -11,11 +11,12 @@
 
 #include "Request.h"
 #include <queue>
+#include <vector>
 
 class RequestQueue {
 private:
     std::queue<Request*> queue; //!< queue of requests.
-
+    
 public:
     RequestQueue(); //!< constructor.
     ~RequestQueue(); //!< destructor.
@@ -24,6 +25,7 @@ public:
     bool isEmpty(); //!< check if the queue is empty.
     int size(); //!< get the size of the queue.
     void print(); //!< print the queue.
+    std::vector<int> requestTimes; //!< the times of the requests.
 };
 
 #endif
