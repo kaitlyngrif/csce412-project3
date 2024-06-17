@@ -21,7 +21,6 @@
  */
 class LoadBalancer {
 private:
-    RequestQueue& requestQueue; //!< reference to the request queue.
     std::vector<std::unique_ptr<WebServer>> webServers; //!< vector of web servers.
     int time; //!< time of the process currently running load balancer.
     int serverCount; //!< number of servers.
@@ -40,6 +39,7 @@ public:
     void print(); //!< print the status of all web servers the load balancer is responsible for.
     bool isEmpty(); //!< check if the request queue is empty.
     double averageRunTime(); //!< get the average run time of the requests.
+    RequestQueue& requestQueue; //!< reference to the request queue.
 };
 
 #endif

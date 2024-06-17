@@ -82,6 +82,22 @@ int main() {
     cout << endl << "The load balancer started with " << startingQueueSize << " requests and ended with " << endingQueueSize << " requests." << endl << endl;
     logFile << endl << "The load balancer started with " << startingQueueSize << " requests and ended with " << endingQueueSize << " requests." << endl << endl;
 
+    // find balancer minimum and maximum times
+    int min = balancer->requestQueue.requestTimes.at(0);
+    int max = balancer->requestQueue.requestTimes.at(0);
+    std::vector<int> runTimes = balancer->requestQueue.requestTimes;
+    for(int i = 0; i < runTimes.size(); i++) {
+        if(runTimes.at(i) < min) {
+            min = runTimes.at(i);
+        }
+        if(runTimes.at(i) > max) {
+            max = runTimes.at(i);
+        }
+    }
+
+    cout << "The minimum time to process a request was " << min << " clock cycles, and the maximum amount of time was " << max << " clock cycles." << endl;
+    logFile << "The minimum time to process a request was " << min << " clock cycles, and the maximum amount of time was " << max << " clock cycles." <<endl;
+
     cout << "The average time to process a request was " << balancer->averageRunTime() << " clock cycles." << endl;
     logFile << "The average time to process a request was " << balancer->averageRunTime() << " clock cycles." << endl;
     

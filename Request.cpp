@@ -24,7 +24,7 @@ Request::Request(){
             IPout += ".";
         }
     }
-    time = (rand() % 250);
+    time = (rand() % 250) + 100;
 };
 
 /**
