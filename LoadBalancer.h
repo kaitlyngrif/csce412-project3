@@ -24,6 +24,7 @@ public:
     void addRequest();
     void addWebServer();
     void removeWebServer();
+    int getLeastLoadedServer();
     void processRequest();
     void print();
     bool isEmpty();

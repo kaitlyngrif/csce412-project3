@@ -11,7 +11,7 @@ Request::Request(){
             IPout += ".";
         }
     }
-    time = (rand() % 250) + 150;
+    time = (rand() % 250);
 };
 
 void Request::print() {
