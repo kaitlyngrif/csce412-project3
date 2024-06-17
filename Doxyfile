@@ -1,0 +1,33 @@
+# Project settings
+PROJECT_NAME           = "Load Balancer Project"
+PROJECT_NUMBER         = "1.0"
+OUTPUT_DIRECTORY       = docs
+
+# Build related configuration options
+EXTRACT_ALL            = YES
+
+# Input settings
+INPUT                  = /mnt/c/Users/kng20/OneDrive/Documents/csce412/project_three
+FILE_PATTERNS          = *.cpp *.h
+RECURSIVE              = NO
+
+# Source code parsing
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = YES
+STRIP_CODE_COMMENTS    = YES
+
+# HTML output settings
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+
+# Dot configuration (if you want diagrams)
+HAVE_DOT               = YES
+DOT_PATH               = /usr/bin/dot
+DOT_IMAGE_FORMAT       = svg
+INTERACTIVE_SVG        = YES
+DOT_GRAPH_MAX_NODES    = 50
+MAX_DOT_GRAPH_DEPTH    = 0
+DOT_TRANSPARENT        = YES
+DOT_MULTI_TARGETS      = NO
+GENERATE_LEGEND        = YES
+DOT_CLEANUP            = YES
