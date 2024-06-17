@@ -72,9 +72,6 @@ void LoadBalancer::balanceLoad() {
                     cerr << "Error: Attempted to get a null request from the queue." << endl;
                 }
             }
-            if(!webServers[i]->isEmpty()) {
-                webServers[i]->processRequest();
-            }
         } else {
             cerr << "Error: webServers[" << i << "] is null." << endl;
         }
