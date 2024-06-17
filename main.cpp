@@ -29,13 +29,13 @@ int main() {
     //!< input validation, ensure both inputs are integers.
     try {
         serverCount = std::stoi(serverInput);
-    } catch (std::invalid_argument) {
+    } catch (const std::invalid_argument& e) {
         cout << "Please enter a whole number for the maximum number of servers!" << endl;
         return 1;
     }
     try {
         balancerTime = std::stoi(balancerInput);
-    } catch (std::invalid_argument) {
+    } catch (const std::invalid_argument& e) {
         cout << "Please enter a whole number for the amount of clock cycles!" << endl;
         return 1;
     }
@@ -60,15 +60,17 @@ int main() {
     int startingQueueSize = queue.size();
 
     //!< create load balancer.
-    LoadBalancer balancer(queue);
+    LoadBalancer* balancer = new LoadBalancer(queue);
 
     //!< call load balancer with queue and time.
-    balancer.runBalancer(balancerTime, serverCount);
+    balancer->runBalancer(balancerTime, serverCount);
 
     //!< record ending queue size.
     int endingQueueSize = queue.size();
 
     cout << endl << "The load balancer started with " << startingQueueSize << " requests and ended with " << endingQueueSize << " requests." << endl << endl;
+
+    delete balancer;
 
     return 0;
 }

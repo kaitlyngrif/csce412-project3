@@ -8,6 +8,7 @@
 
 #include "LoadBalancer.h"
 #include <iostream>
+#include <memory>
 using std::endl, std::cerr, std::cout;
 
 /**
@@ -23,7 +24,12 @@ LoadBalancer::LoadBalancer(RequestQueue& requestQueue)
  * @brief Destroy the Load Balancer:: Load Balancer object.
  */
 LoadBalancer::~LoadBalancer() {
+    while (!requestQueue.isEmpty()) {
+        Request* req = requestQueue.getNext();
+        delete req;
+    }
 }
+
 
 /**
  * @brief Run the load balancer for a given amount of time with a given number of servers.
@@ -122,8 +128,10 @@ int LoadBalancer::getLeastLoadedServer() {
  * @brief  Adds a request to the request queue.
  */
 void LoadBalancer::addRequest() {
-    requestQueue.addRequest(new Request());
+    Request* newRequest = new Request();
+    requestQueue.addRequest(newRequest);
 }
+
 
 /**
  * @brief Adds a web server to the load balancer.

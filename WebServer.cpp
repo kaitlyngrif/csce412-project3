@@ -22,6 +22,7 @@ WebServer::~WebServer() {
     while (!webQueue.empty()) {
         Request* request = webQueue.front();
         webQueue.pop();
+        delete request;
     }
 }
 
