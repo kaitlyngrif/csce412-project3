@@ -61,7 +61,7 @@ void LoadBalancer::balanceLoad() {
         removeWebServer();
     }
 
-    // balance load
+    // balance load - TODO: implement a better load balancing algorithm
     for (int i = 0; i < serverCount; i++) {
         if (webServers[i]) {
             if (!requestQueue.isEmpty()) {
