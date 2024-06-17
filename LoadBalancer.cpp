@@ -25,12 +25,13 @@ void LoadBalancer::runBalancer(int time, int serverCount) {
 
         // add new request to the queue randomly
         if (rand() % 4 == 0) { // 25% chance of adding a request
+            cout << "Adding a request randomly" << endl;
             addRequest();
         }
 
         // increment load balancer's time
         this->time++;
-        std::cout << "Time: " << this->time << std::endl;
+        std::cout << endl << "Time: " << this->time << std::endl;
 
         // process requests on each server
         processRequest();
@@ -97,6 +98,7 @@ void LoadBalancer::removeWebServer() {
 void LoadBalancer::processRequest() {
     for (int i = 0; i < serverCount; i++) {
         if (webServers[i]) {
+            cout << "Server " << i << " processing request for " << webServers[i]->getTime() << " clock cycles." << endl;
             webServers[i]->processRequest();
         } else {
             cerr << "Error: Attempted to process request on a null web server." << endl;

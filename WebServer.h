@@ -15,6 +15,7 @@ public:
     void addRequest(Request* request);
     bool isEmpty();
     int size();
+    int getTime();
     void processRequest();
     std::queue<Request*> getRequests();
 };

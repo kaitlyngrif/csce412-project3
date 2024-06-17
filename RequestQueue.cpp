@@ -13,7 +13,6 @@ RequestQueue::~RequestQueue() {
 void RequestQueue::addRequest(Request* request) {
     if (request != nullptr) {
         queue.push(request);
-        std::cout << "Added request to queue. Queue size is now: " << queue.size() << std::endl;
     } else {
         std::cerr << "Error: Attempted to add a null request to the queue." << std::endl;
     }

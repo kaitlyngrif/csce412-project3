@@ -32,6 +32,11 @@ int WebServer::size() {
     return webQueue.size();
 }
 
+int WebServer::getTime() {
+    time = webQueue.front()->getTime();
+    return time;
+}
+
 void WebServer::processRequest() {
     if (webQueue.empty()) {
         cout << "No requests to process" << endl;
@@ -40,6 +45,8 @@ void WebServer::processRequest() {
 
     Request* request = webQueue.front();
     request->process();  // decrease request's time by one clock cycle
+
+    time = request->getTime();
 
     if (request->isComplete()) {
         cout << "Request from " << request->getIPin() << " to " << request->getIPout() << " has been processed" << endl;
