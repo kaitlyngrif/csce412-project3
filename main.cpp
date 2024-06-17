@@ -55,7 +55,7 @@ int main() {
     // record ending queue size
     int endingQueueSize = queue.size();
 
-    cout << "The load balancer started with " << startingQueueSize << " requests and ended with " << endingQueueSize << " requests." << endl;
+    cout << endl << "The load balancer started with " << startingQueueSize << " requests and ended with " << endingQueueSize << " requests." << endl << endl;
 
     return 0;
 }

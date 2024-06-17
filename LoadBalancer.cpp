@@ -109,7 +109,7 @@ void LoadBalancer::removeWebServer() {
 void LoadBalancer::processRequest() {
     for (int i = 0; i < serverCount; i++) {
         if (webServers[i]) {
-            cout << "Server " << i << " processing request for " << webServers[i]->getTime() << " clock cycles." << endl;
+            cout << "Server " << (i+1) << " processing request for " << webServers[i]->getTime() << " clock cycles." << endl;
             webServers[i]->processRequest();
         } else {
             cerr << "Error: Attempted to process request on a null web server." << endl;
